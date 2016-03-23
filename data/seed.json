@@ -1,0 +1,72 @@
+{
+  "breweries": [
+    {
+      "_id": "9bc271d0-21c8-4f6b-8436-2813be262aab",
+      "name": "Prost Brewing",
+      "description": "German-style specialty beers.",
+      "address": {
+        "display": "2540 19th Street Denver, Colorado 80211"
+      },
+      "region_large": "Denver",
+      "region_small": "Highlands",
+      "coordinates": {
+        "lon": -105.00672,
+        "lat": 39.76140
+      },
+      "telephone": "3037291175",
+      "website_url": "https://prostbrewing.com",
+      "yelp_url": "https://www.yelp.com/biz/prost-brewery-denver"
+    },
+    {
+      "_id": "3d134f94-174c-4185-96a4-5b89af45e240",
+      "name": "Funkwerks",
+      "description": "In 2007 Gordon Schuck's recipe design and brewing skills resulted in a gold medal-winning Saison at the National Homebrew Competition. Brad Lincoln first experienced craft beer while working as an accountant in Portland, OR. The two met during the winter of 2009 while attending the Siebel Institute and studying brewing science. After being immersed in beer for the better part of five months, the two graduated and shared a desire to open a brewery. This resulted in the Saison-focused brewery that is now Funkwerks.",
+      "address": {
+        "display": "1900 E Lincoln Ave Fort Collins, CO 80524"
+      },
+      "region_large": "Fort Collins",
+      "coordinates": {
+        "lon": -105.04206,
+        "lat": 40.58309
+      },
+      "telephone": "9704823865",
+      "website_url": "http://funkwerks.com/",
+      "yelp_url": "https://www.yelp.com/biz/funkwerks-fort-collins"
+    }
+  ],
+  "beers": [
+    {
+      "_id": "4ee82b29-fbf9-4981-ace0-9d18e91f4683",
+      "brewery_id": "9bc271d0-21c8-4f6b-8436-2813be262aab",
+      "$brewery_name": "Prost Brewing",
+      "name": "Märzen Oktoberfest",
+      "description": "Prost Märzen is a deep orange, malty lager. Originally, it was brewed in March (Maerz). In the days before refrigeration, this was the last month to brew before the weather was too warm. Later, the Oktoberfest celebration was the perfect event to drink the last of the Maerz beer and start brewing again. Starting in the 1970’s the Munich brewers started making paler versions of the Oktoberfest biers. The beer now is a kicked up Helles bier brewed to a slightly higher gravity. At Prost we make a more traditional Märzenbier. Our Märzenbier is orange in color, with a rich malt profile from the abundant use of Vienna and Munich malts.",
+      "malts": [
+        "Munich",
+        "Vienna",
+        "Caramunich"
+      ],
+      "hops": [
+        "Hallertau Mittelfrüh Monastery yeast strain"
+      ],
+      "ibus": 24,
+      "abv_pct": 5.8
+    },
+    {
+      "_id": "95190831-7999-4841-b45a-5008e60d9778",
+      "brewery_id": "3d134f94-174c-4185-96a4-5b89af45e240",
+      "$brewery_name": "Funkwerks",
+      "name": "Saison",
+      "description": "Our flagship Saison Born from a series of test batches begun in Gordon Schuck’s backyard. 2012 Great American Beer Festival gold medal-winning Saison. Passion fruit, tangerine, lemon verbena, ginger and black pepper. Pairs well with high-fives.",
+      "abv_pct": 6.8
+    },
+    {
+      "_id": "48511321-5729-4336-bc78-e28f725f5b42",
+      "brewery_id": "3d134f94-174c-4185-96a4-5b89af45e240",
+      "$brewery_name": "Funkwerks",
+      "name": "Tropic King",
+      "description": "Originally designed to be a hoppier version of our flagship Saison, the accidental (but fortuitous) addition of two extra bags of Munich malt balanced the hop leaving us this very unique Imperial Saison. Notes of passion fruit, mango, peach, ginger and pepper. Pairs well with hula hooping.",
+      "abv_pct": 8.0
+    }
+  ]
+}

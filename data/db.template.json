@@ -1,0 +1,101 @@
+{
+  "template": "db",
+  "mappings": {
+    "breweries": {
+      "dynamic_templates": [
+        {
+          "strings": {
+            "match_mapping_type": "string",
+            "mapping": {
+              "type": "string",
+              "fields": {
+                "raw": {
+                  "type":  "string",
+                  "index": "not_analyzed",
+                  "ignore_above": 256
+                }
+              }
+            }
+          }
+        }
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "address": {
+          "type": "object",
+          "properties": {
+            "display": {
+              "type": "string"
+            }
+          }
+        },
+        "region_large": {
+          "type": "string"
+        },
+        "region_small": {
+          "type": "string"
+        },
+        "coordinates": {
+          "type": "geo_point",
+          "lat_lon": true
+        },
+        "telephone": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "website_url": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "yelp_url": {
+          "type": "string",
+          "index": "not_analyzed"
+        }
+      }
+    },
+    "beers": {
+      "dynamic_templates": [
+        {
+          "strings": {
+            "match_mapping_type": "string",
+            "mapping": {
+              "type": "string",
+              "fields": {
+                "raw": {
+                  "type":  "string",
+                  "index": "not_analyzed",
+                  "ignore_above": 256
+                }
+              }
+            }
+          }
+        }
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "malts": {
+          "type": "string"
+        },
+        "hops": {
+          "type": "string"
+        },
+        "ibus": {
+          "type": "integer"
+        },
+        "abv_pct": {
+          "type": "double"
+        }
+      }
+    }
+  }
+}
