@@ -6,7 +6,8 @@ import {
   GraphQLNonNull,
   GraphQLSchema,
   GraphQLString,
-  GraphQLFloat
+  GraphQLFloat,
+  GraphQLInteger
 } from 'graphql';
 import { getBrewery } from './resolvers';
 
@@ -84,8 +85,60 @@ export const breweryType = new GraphQLObjectType({
 });
 
 /**
+ * type Beer {
+ *   id: String!
+ *   brewery_id: String!
+ *   name: String
+ *   description: String
+ *   malts: [String]
+ *   hops: [String]
+ *   ibus: Integer
+ *   abv_pct: Float
+ * }
+ */
+export const beerType = new GraphQLObjectType({
+  name: 'Beer',
+  description: 'A beer.',
+  fields: () => ({
+    id: {
+      type: new GraphQLNonNull(GraphQLString),
+      description: 'The beer\'s unique identifier.'
+    },
+    brewery_id: {
+      type: new GraphQLNonNull(GraphQLString),
+      description: 'The brewery\'s unique identifier.'
+    },
+    name: {
+      type: GraphQLString,
+      description: 'The name of the beer.'
+    },
+    description: {
+      type: GraphQLString,
+      description: 'The description of the beer.'
+    },
+    malts: {
+
+    },
+    hops: {
+
+    },
+    ibus: {
+      type: GraphQLInteger,
+      description: 'International Bittering Units measurement of the bitterness of the beer.'
+    },
+    abv_pct: {
+      type: GraphQLFloat,
+      description: 'Alcohol By Volume, expressed as a percentage.'
+    }
+  })
+});
+
+/**
  * type Query {
  *   brewery(id: String!): Brewery
+ *   beer(id: String!): Beer
+ *   beers(brewery_id: String!): [Beer]
+ *   findBeers(query: String!): [Beer]
  * }
  */
 export const queryType = new GraphQLObjectType({
