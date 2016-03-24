@@ -1,6 +1,9 @@
 import path from 'path';
 import config from './config';
 import { Server } from 'hapi';
+import staticAssets from 'inert';
+import proxy from 'h2o2';
+import views from './registrations/views';
 import api from './registrations/api';
 import monitoring from './registrations/monitoring';
 
@@ -12,8 +15,11 @@ server.connection({
 });
 
 server.register([
+  proxy,
   monitoring,
-  api
+  api,
+  staticAssets,
+  views
 ], error => {
   if (error) throw error;
 
