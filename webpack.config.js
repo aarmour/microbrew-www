@@ -14,9 +14,6 @@ module.exports = {
   },
 
   module: {
-    // preLoaders: [
-    //   { test: /\.js$/, loader: 'baggage?[file].css=styles' }
-    // ],
     loaders: [
       { test: /\.js$/, loader: 'babel', exclude: /node_modules/ },
       {
