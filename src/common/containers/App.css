@@ -1,0 +1,22 @@
+.page {
+  height: 100%;
+  position: absolute;
+}
+
+:global(.container-enter) {
+  transform: translateX(100vw);
+  transition: transform .3s ease-in;
+}
+
+:global(.container-enter.container-enter-active) {
+  transform: translateX(0vw);
+}
+
+:global(.container-leave) {
+  transform: translateX(0vw);
+  transition: transform .3s ease-in;
+}
+
+:global(.container-leave.container-leave-active) {
+  transform: translateX(-100vw);
+}
