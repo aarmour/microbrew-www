@@ -21,7 +21,7 @@ module.exports = {
     new webpack.optimize.OccurenceOrderPlugin()
   ],
 
-  devtool: 'inline-source-map',
+  devtool: 'cheap-module-source-map',
 
   devServer: {
 
