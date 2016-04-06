@@ -1,8 +1,22 @@
+import fs from 'fs';
+import CleanCss from 'clean-css';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 import routes from '../../common/routes';
 import template from './templates/index';
+
+function loadCssReset() {
+  const normalizeCssPath = require.resolve('normalize.css/normalize.css');
+
+  return fs.readFileSync(normalizeCssPath, 'utf8');
+}
+
+const minifier = new CleanCss();
+
+function minifyCss(css) {
+  return minifier.minify(css).styles;
+}
 
 export function index(request, reply) {
 
@@ -11,7 +25,12 @@ export function index(request, reply) {
     if (redirectLocation) return reply.redirect(redirectLocation.pathname + redirectLocation.search);
 
     const appHtml = renderToString(<RouterContext {...renderProps} />);
-    const data = { html: appHtml, bundleUrl: this.bundleUrl };
+
+    const data = {
+      html: appHtml,
+      css: minifyCss(loadCssReset()),
+      bundleUrl: this.bundleUrl };
+
     const html = template(data);
 
     reply(html);

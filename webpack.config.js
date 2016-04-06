@@ -1,6 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
 
+const LOCAL_IDENT_NAME = '[name]_[local]_[hash:base64:5]';
+
 module.exports = {
 
   entry: './src/client',
@@ -13,7 +15,14 @@ module.exports = {
 
   module: {
     loaders: [
-      { test: /\.js$/, loader: 'babel', exclude: /node_modules/ }
+      { test: /\.js$/, loader: 'babel', exclude: /node_modules/ },
+      {
+        test: /\.css$/,
+        loaders: [
+          'style?sourceMap',
+          `css?modules&importLoaders=1&localIdentName=${LOCAL_IDENT_NAME}`
+        ]
+      }
     ]
   },
 
@@ -23,8 +32,8 @@ module.exports = {
 
   devtool: 'cheap-module-source-map',
 
-  devServer: {
-
+  cssModules: {
+    localIdentName: LOCAL_IDENT_NAME
   }
 
 };
