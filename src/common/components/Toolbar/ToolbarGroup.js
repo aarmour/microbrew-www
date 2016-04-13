@@ -4,14 +4,12 @@ import styles from './ToolbarGroup.css';
 export default class ToolbarGroup extends Component {
 
   static propTypes = {
-    children: PropTypes.node,
-    region: PropTypes.oneOf(['left', 'center', 'right'])
+    children: PropTypes.node
   };
 
   render() {
     const {
       children,
-      region,
       ...other
     } = this.props;
 
