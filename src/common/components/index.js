@@ -1,2 +1,3 @@
-export { default as Toolbar } from './Toolbar/Toolbar';
-export { default as ToolbarTitle } from './Toolbar/ToolbarTitle';
+export Toolbar from './Toolbar/Toolbar';
+export ToolbarGroup from './Toolbar/ToolbarGroup';
+export ToolbarTitle from './Toolbar/ToolbarTitle';
