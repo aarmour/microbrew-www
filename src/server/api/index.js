@@ -1,11 +1,11 @@
 import { hapi as GraphQL } from '@risingstack/graffiti';
-import { ApiSchema } from './schema';
+import { Schema } from './schema';
 
 export default function register(server, options, next) {
   server.register({
     register: GraphQL,
     options: {
-      schema: ApiSchema
+      schema: Schema
     }
   });
 

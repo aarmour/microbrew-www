@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+// import { createContainer } from 'react-relay';
 
 export default class App extends Component {
 
@@ -11,3 +12,7 @@ export default class App extends Component {
   }
 
 }
+
+// export default createContainer(App, {
+//   fragments: {}
+// });

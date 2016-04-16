@@ -1,0 +1,47 @@
+type Address {
+  street: String
+  city: String
+  state: String
+  postal_code: String
+  formatted: String
+}
+
+type BreweriesConnection {
+  pageInfo: PageInfo!
+  edges: [BreweriesEdge]
+}
+
+type BreweriesEdge {
+  node: Brewery
+  cursor: String!
+}
+
+type Brewery implements Node {
+  id: ID!
+  slug: String!
+  name: String
+  address: Address
+  coordinates: CoordinatePair
+}
+
+type CoordinatePair {
+  x: Float
+  y: Float
+}
+
+interface Node {
+  id: ID!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type Query {
+  node(id: ID!): Node
+  breweries(after: String, first: Int, before: String, last: Int): BreweriesConnection
+  brewery(id: String!): Brewery
+}

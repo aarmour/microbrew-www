@@ -11,7 +11,7 @@ export default function render(data) {
       <body>
         <div id="react-mount">${data.html}</div>
         <script>
-
+          window.__RELAY_DATA__ = ${JSON.stringify(data.relay)};
         </script>
         <script src="${data.bundleUrl}"></script>
       </body>

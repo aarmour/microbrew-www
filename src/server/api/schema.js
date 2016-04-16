@@ -1,39 +1,89 @@
 import {
-  GraphQLEnumType,
+  GraphQLSchema,
   GraphQLInterfaceType,
   GraphQLObjectType,
+  GraphQLEnumType,
   GraphQLList,
   GraphQLNonNull,
-  GraphQLSchema,
-  GraphQLString,
+  GraphQLInteger,
   GraphQLFloat,
-  GraphQLInteger
+  GraphQLString,
+  GraphQLBoolean,
+  GraphQLID
 } from 'graphql';
-import { getBrewery } from './resolvers';
 
-/**
- * interface Address {
- *   display: String
- * }
- */
-export const addressInterface = new GraphQLInterfaceType({
+import {
+  connectionArgs,
+  connectionDefinitions,
+  connectionFromArray,
+  fromGlobalId,
+  globalIdField,
+  mutationWithClientMutationId,
+  nodeDefinitions,
+} from 'graphql-relay';
+
+import {
+  Brewery,
+  getBreweries,
+  getBrewery
+} from './database';
+
+const { nodeInterface, nodeField } = nodeDefinitions(
+  (globalId) => {
+    const { type, id } = fromGlobalId(globalId);
+
+    switch(type) {
+      case 'Brewery':
+        return getBrewery(id);
+      case 'Beer':
+        return getBeer(id);
+      default:
+        return null;
+    }
+  },
+  (obj) => {
+    if (obj instanceof Brewery) {
+      return breweryType;
+    } else {
+      return null;
+    }
+  }
+);
+
+export const addressType = new GraphQLObjectType({
   name: 'Address',
-  description: 'A postal address',
+  description: 'A postal address.',
   fields: () => ({
-    display: {
+    street: {
+      type: GraphQLString
+    },
+    city: {
+      type: GraphQLString
+    },
+    state: {
+      type: GraphQLString
+    },
+    postal_code: {
+      type: GraphQLString
+    },
+    formatted: {
       type: GraphQLString,
-      description: 'The address formatted for display.'
+      description: 'The address formatted for display.',
+      resolve(address) {
+        const {
+          street,
+          city,
+          state,
+          postal_code
+        } = address;
+
+        return `${street}, ${city}, ${state} ${postal_code}`;
+      }
     }
   })
 });
 
-/**
- * interface CoordinatePair {
- *   x: Float
- *   y: Float
- * }
- */
-export const coordinatePairInterface = new GraphQLInterfaceType({
+export const coordinatePairType = new GraphQLObjectType({
   name: 'CoordinatePair',
   description: 'A geographic coordinate pair.',
   fields: () => ({
@@ -48,23 +98,11 @@ export const coordinatePairInterface = new GraphQLInterfaceType({
   })
 });
 
-/**
- * type Brewery {
- *   id: String!
- *   slug: String!
- *   name: String
- *   address: Address
- *   coordinates: CoordinatePair
- * }
- */
 export const breweryType = new GraphQLObjectType({
   name: 'Brewery',
   description: 'A brewery.',
   fields: () => ({
-    id: {
-      type: new GraphQLNonNull(GraphQLString),
-      description: 'The brewery\'s unique identifier.'
-    },
+    id: globalIdField('Brewery'),
     slug: {
       type: new GraphQLNonNull(GraphQLString),
       description: 'A URL-friendly identifier.'
@@ -74,76 +112,66 @@ export const breweryType = new GraphQLObjectType({
       description: 'The name of the brewery.'
     },
     address: {
-      type: addressInterface,
-      description: 'The address of the brewery.'
+      type: addressType,
+      description: 'The address of the brewery.',
+      resolve: (brewery) => brewery.address
     },
     coordinates: {
-      type: coordinatePairInterface,
-      description: 'The geographic location of the brewery.'
+      type: coordinatePairType,
+      description: 'The geographic location of the brewery.',
+      resolve: (brewery) => brewery.coordinates
     }
-  })
+  }),
+  interfaces: [nodeInterface]
 });
 
-/**
- * type Beer {
- *   id: String!
- *   brewery_id: String!
- *   name: String
- *   description: String
- *   malts: [String]
- *   hops: [String]
- *   ibus: Integer
- *   abv_pct: Float
- * }
- */
-export const beerType = new GraphQLObjectType({
-  name: 'Beer',
-  description: 'A beer.',
-  fields: () => ({
-    id: {
-      type: new GraphQLNonNull(GraphQLString),
-      description: 'The beer\'s unique identifier.'
-    },
-    brewery_id: {
-      type: new GraphQLNonNull(GraphQLString),
-      description: 'The brewery\'s unique identifier.'
-    },
-    name: {
-      type: GraphQLString,
-      description: 'The name of the beer.'
-    },
-    description: {
-      type: GraphQLString,
-      description: 'The description of the beer.'
-    },
-    malts: {
+const { connectionType: breweryConnectionType } =
+  connectionDefinitions({ name: 'Breweries', nodeType: breweryType });
 
-    },
-    hops: {
+// export const beerType = new GraphQLObjectType({
+//   name: 'Beer',
+//   description: 'A beer.',
+//   fields: () => ({
+//     id: globalIdField('Beer'),
+//     brewery_id: {
+//       type: new GraphQLNonNull(GraphQLString),
+//       description: 'The brewery\'s unique identifier.'
+//     },
+//     name: {
+//       type: GraphQLString,
+//       description: 'The name of the beer.'
+//     },
+//     description: {
+//       type: GraphQLString,
+//       description: 'The description of the beer.'
+//     },
+//     malts: {
+//
+//     },
+//     hops: {
+//
+//     },
+//     ibus: {
+//       type: GraphQLInteger,
+//       description: 'International Bittering Units measurement of the bitterness of the beer.'
+//     },
+//     abv_pct: {
+//       type: GraphQLFloat,
+//       description: 'Alcohol By Volume, expressed as a percentage.'
+//     }
+//   }),
+//   interfaces: [nodeInterface]
+// });
 
-    },
-    ibus: {
-      type: GraphQLInteger,
-      description: 'International Bittering Units measurement of the bitterness of the beer.'
-    },
-    abv_pct: {
-      type: GraphQLFloat,
-      description: 'Alcohol By Volume, expressed as a percentage.'
-    }
-  })
-});
-
-/**
- * type Query {
- *   brewery(id: String!): Brewery
- *   beer(id: String!): Beer
- *   beers(brewery_id: String!): [Beer]
- *   findBeers(query: String!): [Beer]
- * }
- */
 export const queryType = new GraphQLObjectType({
   name: 'Query',
   fields: () => ({
+    node: nodeField,
+    breweries: {
+      type: breweryConnectionType,
+      args: connectionArgs,
+      resolve: (a, args) => connectionFromArray(getBreweries(), args)
+    },
     brewery: {
       type: breweryType,
       args: {
@@ -157,6 +185,6 @@ export const queryType = new GraphQLObjectType({
   })
 });
 
-export const ApiSchema = new GraphQLSchema({
+export const Schema = new GraphQLSchema({
   query: queryType
 });

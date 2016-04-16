@@ -2,8 +2,10 @@ import fs from 'fs';
 import path from 'path';
 import CleanCss from 'clean-css';
 import React from 'react';
+import Relay from 'react-relay';
 import { renderToString } from 'react-dom/server';
-import { match, RouterContext } from 'react-router';
+import { match } from 'react-router';
+import IsomorphicRouter from 'isomorphic-relay-router';
 import routes from '../../common/routes';
 import template from './templates/index';
 
@@ -24,21 +26,40 @@ function minifyCss(css) {
   return minifier.minify(css).styles;
 }
 
+const css = minifyCss(loadCss());
+
 export function index(request, reply) {
 
   match({ routes, location: request.url }, (error, redirectLocation, renderProps) => {
     if (error) return reply(error);
     if (redirectLocation) return reply.redirect(redirectLocation.pathname + redirectLocation.search);
 
-    const appHtml = renderToString(<RouterContext {...renderProps} />);
+    const { bundleUrl } = this;
 
-    const data = {
-      html: appHtml,
-      css: minifyCss(loadCss()),
-      bundleUrl: this.bundleUrl };
+    IsomorphicRouter.prepareData(renderProps)
+      .then(render)
+      // .catch(reply);
+      .catch(error => {
+        console.log('ERROR:', error);
+        reply(error);
+      });
 
-    const html = template(data);
+    function render({ data, props }) {
+      const appHtml = renderToString(
+        <IsomorphicRouter.RouterContext {...props} />
+      );
 
-    reply(html);
+      const templateData = {
+        html: appHtml,
+        css,
+        relay: data,
+        bundleUrl
+      };
+
+      const html = template(templateData);
+
+      reply(html);
+    }
+
   });
 }

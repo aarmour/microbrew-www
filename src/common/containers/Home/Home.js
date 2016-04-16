@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Toolbar } from '../../components';
+import { Link } from 'react-router';
+import { Toolbar, NavList, NavListItem } from '../../components';
 
 export default class HomePage extends Component {
 
@@ -7,6 +8,9 @@ export default class HomePage extends Component {
     return (
       <div>
         <Toolbar />
+        <NavList>
+          <NavListItem text={<Link to="/breweries">Breweries</Link>} />
+        </NavList>
       </div>
     );
   }

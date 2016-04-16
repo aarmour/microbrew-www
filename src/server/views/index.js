@@ -1,8 +1,13 @@
 import views from 'vision';
+import Relay from 'react-relay';
 import { index } from './handlers';
 
 export default function register(server, options, next) {
   server.bind(options);
+
+  Relay.injectNetworkLayer(
+    new Relay.DefaultNetworkLayer(options.graphQLUrl)
+  );
 
   server.route({
     method: 'GET',
