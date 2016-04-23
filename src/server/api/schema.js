@@ -175,12 +175,11 @@ export const queryType = new GraphQLObjectType({
     brewery: {
       type: breweryType,
       args: {
-        id: {
-          type: new GraphQLNonNull(GraphQLString),
-          description: 'The brewery\'s unique identifier.'
+        slug: {
+          type: new GraphQLNonNull(GraphQLString)
         }
       },
-      resolve: (root, { id }) => getBrewery(id)
+      resolve: (root, { slug }) => getBrewery(slug)
     }
   })
 });

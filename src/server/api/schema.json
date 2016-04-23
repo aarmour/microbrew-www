@@ -97,8 +97,8 @@
               "description": null,
               "args": [
                 {
-                  "name": "id",
-                  "description": "The brewery's unique identifier.",
+                  "name": "slug",
+                  "description": null,
                   "type": {
                     "kind": "NON_NULL",
                     "name": null,

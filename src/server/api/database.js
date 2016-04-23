@@ -3,7 +3,7 @@ export class Brewery {}
 const breweries = [
   Object.assign(new Brewery(), {
     id: '0',
-    slug: 'us/co/0',
+    slug: 'us-co-0',
     name: 'Foo Brewery',
     address: {
       street: '123 Main Street',
@@ -17,8 +17,8 @@ const breweries = [
     }
   }),
   Object.assign(new Brewery(), {
-    id: '11',
-    slug: 'us/co/1',
+    id: '1',
+    slug: 'us-co-1',
     name: 'Bar Brewery',
     address: {
       street: '9876 Anywhere Street',
@@ -33,8 +33,8 @@ const breweries = [
   })
 ];
 
-export function getBrewery(id) {
-  return breweries[id];
+export function getBrewery(slug) {
+  return breweries.find(brewery => brewery.slug === slug);
 }
 
 export function getBreweries() {

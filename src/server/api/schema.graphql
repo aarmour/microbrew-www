@@ -43,5 +43,5 @@ type PageInfo {
 type Query {
   node(id: ID!): Node
   breweries(after: String, first: Int, before: String, last: Int): BreweriesConnection
-  brewery(id: String!): Brewery
+  brewery(slug: String!): Brewery
 }
